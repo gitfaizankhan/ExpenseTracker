@@ -1,17 +1,20 @@
 const signup = require('../models/signup');
+const bcrypt = require('bcrypt');
 
 exports.sign_up = async (req, res, next)=>{
     try{
         let name = req.body.name;
         let email = req.body.email;
         let password = req.body.password;
-
-        let resultData = await signup.create({
-            name: name,
-            email: email,
-            password: password
+        const salt = 5; 
+        bcrypt.hash(password, salt, async (err, hash)=>{
+            let resultData = await signup.create({
+                name: name,
+                email: email,
+                password: hash
+            });
+            res.json(resultData);
         });
-        res.json(resultData);
     }catch(err){
         res.status(403).json(err);
     }
