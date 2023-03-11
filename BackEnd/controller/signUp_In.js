@@ -28,7 +28,7 @@ exports.login = async (req, res, next)=>{
             email: loginEmail
         }});
         if (userExist !== null){
-            if(userExist.password === loginPass){
+            if (bcrypt.compareSync(loginPass, userExist.password)){
                 res.status(200).json({
                     message: "User Logged in successfully",
                     success: true
