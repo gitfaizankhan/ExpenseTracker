@@ -1,0 +1,27 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "description": "**html file ==> html/signup.html**\r **page background image ==> images/wall.png**\r **action file ==>  script/signup.js**",
+  "main": "app.js",
+  "scripts": {
+    "start": "app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitfaizankhan/ExpenseTracker.git"
+  },
+  "author": "Faizan Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitfaizankhan/ExpenseTracker/issues"
+  },
+  "homepage": "https://github.com/gitfaizankhan/ExpenseTracker#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql2": "^3.2.0",
+    "sequelize": "^6.29.3"
+  }
+}
