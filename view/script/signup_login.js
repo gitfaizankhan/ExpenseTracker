@@ -9,8 +9,8 @@ async function signup(){
             email: email,
             password: pass
         }
-        const data = await axios.post('http://localhost:3000/user/sign-up', signupData);
-        console.log("hrllo", data);
+        await axios.post('http://localhost:3000/user/sign-up', signupData);
+        window.location.href = "signin.html";
     }catch(error){
         console.error(error.message);
 
