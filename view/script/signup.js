@@ -9,7 +9,7 @@ async function signup(){
             email: email,
             password: pass
         }
-        const data = await axios.post('http://localhost:3000/user/signup', signupData);
+        const data = await axios.post('http://localhost:3000/user/sign-up', signupData);
         console.log(data);
     }catch(err){
         console.log(err);
