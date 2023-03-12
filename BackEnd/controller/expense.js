@@ -6,11 +6,12 @@ exports.addExpense = async (req, res, next)=>{
         let description = req.body.description;
         let category = req.body.category;
 
-        let expenseResult = expense.create({
+        let expenseResult = await expense.create({
             amount: amount,
             description: description,
             category: category
         });
+        // console.log("expenseResult", expenseResult.data)
         res.status(200).json(expenseResult);
     }catch(error){
         res.status(403).json(error);

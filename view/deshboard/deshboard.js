@@ -8,7 +8,9 @@ async function addExpense(){
             description,
             category
         }
-        axios.post('http://localhost:3000/user/addExpense/', expenseData);
+        const result = await axios.post('http://localhost:3000/user/addExpense/', expenseData);
+        // console.log("hekasfl ", d.data);
+        showOnWindow(result.data);
     }catch(error){
         console.log(error);
     }
