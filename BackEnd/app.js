@@ -10,9 +10,9 @@ const User = require('./models/user');
 
 const app = express();
 
-
 User.hasMany(Expense);
 Expense.belongsTo(User);
+
 
 // test
 app.use(bodyParser.urlencoded({extended:true}));
