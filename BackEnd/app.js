@@ -11,7 +11,7 @@ const User = require('./models/user');
 const app = express();
 
 
-User.hasMany(Expense)
+User.hasMany(Expense);
 Expense.belongsTo(User);
 
 // test
@@ -24,8 +24,8 @@ app.use('/user', userRoute);
 
 async function syncDB() {
     try {
-        // await dbConnection.sync({ force: true });
-        await dbConnection.sync();
+        await dbConnection.sync({ force: true });
+        // await dbConnection.sync();
         console.log('Database synchronized successfully!');
     } catch (error) {
         console.error('Error synchronizing database:', error);
