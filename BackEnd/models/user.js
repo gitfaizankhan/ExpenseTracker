@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const dbConnection = require('../utils/dbConnection');
 
-const signupSchema = dbConnection.define('signup', {
+const userSchema = dbConnection.define('user', {
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -23,4 +23,4 @@ const signupSchema = dbConnection.define('signup', {
     },
 });
 
-module.exports = signupSchema;
+module.exports = userSchema;

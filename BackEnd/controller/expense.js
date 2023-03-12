@@ -11,7 +11,6 @@ exports.addExpense = async (req, res, next)=>{
             description: description,
             category: category
         });
-        // console.log("expenseResult", expenseResult.data)
         res.status(200).json(expenseResult);
     }catch(error){
         res.status(403).json(error);

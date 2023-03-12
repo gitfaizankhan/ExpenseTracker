@@ -1,4 +1,4 @@
-const signup = require('../models/signup');
+const user = require('../models/user');
 const bcrypt = require('bcrypt');
 
 exports.sign_up = async (req, res, next)=>{
@@ -7,8 +7,8 @@ exports.sign_up = async (req, res, next)=>{
         let email = req.body.email;
         let password = req.body.password;
         const salt = 5; 
-        bcrypt.hash(password, salt, async (err, hash)=>{
-            let resultData = await signup.create({
+        await bcrypt.hash(password, salt, async (err, hash)=>{
+            let resultData = await user.create({
                 name: name,
                 email: email,
                 password: hash
@@ -24,7 +24,7 @@ exports.login = async (req, res, next)=>{
     try{
         let loginEmail = req.body.email;
         let loginPass = req.body.password;
-        let userExist = await signup.findOne({where:{
+        let userExist = await user.findOne({where:{
             email: loginEmail
         }});
         if (userExist !== null){
