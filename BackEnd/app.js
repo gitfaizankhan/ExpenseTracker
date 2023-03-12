@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/user', userRoute);
+
 async function syncDB() {
     try {
         // await dbConnection.sync({ force: true });
