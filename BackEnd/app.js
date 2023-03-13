@@ -10,6 +10,8 @@ const User = require('./models/user');
 
 const app = express();
 
+User.hasMany(Expense);
+Expense.belongsTo(User);
 
 
 // test

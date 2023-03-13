@@ -21,13 +21,11 @@ getExpenseData();
 async function getExpenseData() {
     try {
         let expenseData = await axios.get('http://localhost:3000/user/getExpense');
-        
         for (let data of expenseData.data) {
-            // console.log("hello", data);
             showOnWindow(data);
         }
     } catch (error) {
-
+        console.log(error);
     }
 }
 

@@ -1,5 +1,8 @@
 const user = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
 
 exports.sign_up = async (req, res, next)=>{
     try{
@@ -20,6 +23,12 @@ exports.sign_up = async (req, res, next)=>{
     }
 }
 
+// Generate JWT
+function generateJWT(id){
+    return jwt.sign({ userId: id }, process.env.TOKEN_SECRET);
+};
+
+
 exports.login = async (req, res, next)=>{
     try{
         let loginEmail = req.body.email;
@@ -31,7 +40,8 @@ exports.login = async (req, res, next)=>{
             if (bcrypt.compareSync(loginPass, userExist.password)){
                 res.status(200).json({
                     message: "User Logged in successfully",
-                    success: true
+                    success: true,
+                    token: generateJWT(userExist.id)
                 });
             }else{
                 res.status(401).json({
