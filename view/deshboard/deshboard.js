@@ -8,7 +8,7 @@ async function addExpense(){
             description,
             category
         }
-        const result = await axios.post('http://localhost:3000/user/addExpense/', expenseData);
+        const result = await axios.post('http://localhost:3000/expense/addExpense/', expenseData);
         // console.log("hekasfl ", d.data);
         showOnWindow(result.data);
     }catch(error){
@@ -20,7 +20,7 @@ getExpenseData();
 
 async function getExpenseData() {
     try {
-        let expenseData = await axios.get('http://localhost:3000/user/getExpense');
+        let expenseData = await axios.get('http://localhost:3000/expense/getExpense');
         for (let data of expenseData.data) {
             showOnWindow(data);
         }
@@ -51,7 +51,7 @@ function showOnWindow(data) {
     
     deleteB.addEventListener('click', async (e) => {
         try {
-            await axios.delete('http://localhost:3000/user/delete/' + data.id);
+            await axios.delete('http://localhost:3000/expense/delete/' + data.id);
             tr.remove();
         } catch (error) {
             console.log(error);
