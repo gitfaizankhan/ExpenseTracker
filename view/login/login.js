@@ -9,7 +9,6 @@ async function signin() {
         }
         const data = await axios.post('http://localhost:3000/user/signin', signupData);
         window.alert(data.data.message);
-        console.log(data.data.token);
         localStorage.setItem('token', data.data.token);
         window.location.href = "../deshboard/deshboard.html";
     } catch (error) {

@@ -9,7 +9,6 @@ async function addExpense(){
             category
         }
         const result = await axios.post('http://localhost:3000/expense/addExpense/', expenseData);
-        // console.log("hekasfl ", d.data);
         showOnWindow(result.data);
     }catch(error){
         console.log(error);
@@ -19,8 +18,10 @@ async function addExpense(){
 getExpenseData();
 
 async function getExpenseData() {
+    const token = localStorage.getItem('token');
     try {
-        let expenseData = await axios.get('http://localhost:3000/expense/getExpense');
+        let expenseData = await axios.get('http://localhost:3000/expense/getExpense', { headers: { 'Authorization': token } });
+        console.log(expenseData);
         for (let data of expenseData.data) {
             showOnWindow(data);
         }
