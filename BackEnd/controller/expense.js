@@ -1,7 +1,7 @@
 const expense = require('../models/expense');
 
 exports.addExpense = async (req, res, next)=>{
-    // console.log("Add Usr" );
+    const userId =  req.user.id;
     try{
         let amount = req.body.amount;
         let description = req.body.description;
@@ -10,7 +10,8 @@ exports.addExpense = async (req, res, next)=>{
         let expenseResult = await expense.create({
             amount: amount,
             description: description,
-            category: category
+            category: category,
+            userId: userId
         });
         res.status(200).json(expenseResult);
     }catch(error){
@@ -20,12 +21,10 @@ exports.addExpense = async (req, res, next)=>{
 
 
 exports.getExpense = async (req, res, next)=>{
-    // console.log(req.user.id);
     try{
         const expenseData = await expense.findAll(
-            { where:{userId: req.user.id}}
+            // { where:{userId: req.user.id}}
             );
-        console.log("Hello", expenseData);
         res.status(200).json(expenseData);
     }catch(error){
         res.status(403).json(error);
@@ -36,9 +35,15 @@ exports.getExpense = async (req, res, next)=>{
 exports.deleteExpense = async (req, res, next)=>{
     
     try{
+        const userId = req.user.id;
         const id = req.params.id;
-        const deleteResult = await expense.destroy({ where: { id: req.params.id } });
-        res.status(200).json(deleteResult);
+        const deleteResult = await expense.destroy({ where: {  id: id, userId: userId } });
+        // console.log("deleteResult ", deleteResult);
+        if(deleteResult < 1){
+            res.status(403).json({ message: "Something Went Wrong", success: false});
+        }else{
+            res.status(200).json(deleteResult);
+        }
     }catch(error){
         res.status(403).json(error);
     }
