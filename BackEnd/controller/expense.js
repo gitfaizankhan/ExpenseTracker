@@ -23,7 +23,7 @@ exports.addExpense = async (req, res, next)=>{
 exports.getExpense = async (req, res, next)=>{
     try{
         const expenseData = await expense.findAll(
-            // { where:{userId: req.user.id}}
+            { where:{userId: req.user.id}}
             );
         res.status(200).json(expenseData);
     }catch(error){
@@ -38,7 +38,6 @@ exports.deleteExpense = async (req, res, next)=>{
         const userId = req.user.id;
         const id = req.params.id;
         const deleteResult = await expense.destroy({ where: {  id: id, userId: userId } });
-        // console.log("deleteResult ", deleteResult);
         if(deleteResult < 1){
             res.status(403).json({ message: "Something Went Wrong", success: false});
         }else{
