@@ -19,10 +19,12 @@ async function addExpense(){
 getExpenseData();
 
 async function getExpenseData() {
+    
     const token = localStorage.getItem('token');
     try {
         let expenseData = await axios.get('http://localhost:3000/expense/getExpense', { headers: { 'Authorization': token } });
         for (let data of expenseData.data) {
+            // console.log(data);
             showOnWindow(data);
         }
     } catch (error) {
@@ -70,3 +72,36 @@ function showOnWindow(data) {
     tbody.append(tr);
 }
 
+
+// payment
+
+document.getElementById('payment_button').onclick = async function(e){
+    console.log("HELLO PREMIUM");
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://localhost:3000/purchase/premium_member', {headers: {'Authorization':token}});
+    console.log(response);
+    var options = {
+        "key": response.data.key_id,
+        "order_id": response.data.order.id,
+        
+        "handler": async function (response){
+            await axios.post('http://localhost:3000/purchase/update_transaction_status', { 
+                order_id : options.order_id,
+                payment_id: response.rozarpay_payment_id,
+            }, {
+                headers: {'Authorization': token}
+            });
+
+            alert('You are a Premium User Now');
+        }
+    };
+    console.log("Options ", options);
+    var Rozarpay = new Razorpay(options);
+    Rozarpay.open();
+    e.preventDefault();
+
+    Rozarpay.on('payment.failed', function (response) {
+        console.log(response);
+        alert('Something Went Wrong');
+    });
+}

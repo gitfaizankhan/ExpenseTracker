@@ -6,13 +6,14 @@ const userRoute = require('./routes/users');
 const expenseRoute = require("./routes/expense");
 const Expense = require('./models/expense');
 const User = require('./models/user');
+const Order = require('./models/purchaseData');
+const purchaseRoute = require('./routes/purchase');
 
 
 
 const app = express();
 
-User.hasMany(Expense);
-Expense.belongsTo(User);
+;
 
 
 // test
@@ -23,7 +24,13 @@ app.use(cors());
 
 app.use('/user', userRoute);
 app.use('/expense', expenseRoute);
+app.use('/purchase', purchaseRoute);
 
+User.hasMany(Expense);
+Expense.belongsTo(User) 
+
+User.hasMany(Order)
+Order.belongsTo(User)
 
 async function syncDB() {
     try {

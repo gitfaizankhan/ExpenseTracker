@@ -36,8 +36,10 @@
                                         <option class="form-control form-control-lg">Electronic</option>
                                     </select>
                                 </div>
-                                <div class="d-flex justify-content-center">
-                                    <button class="form-control btn btn-primary btn-lg mb-4" type="button" onclick="addExpense()">Add Expense</button>
+                                <div class="d-flex justify-content-center pt-3">
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="addExpense()">Add Expense</button>
+                                    <button type="button" class="btn btn-warning btn-lg ms-2" id="payment_button">Buy Premium</button>
+                                    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
                                 </div>
                             </form>
                         </div>
@@ -68,6 +70,7 @@
                 </div>
             </div>
         </div>
+
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="./deshboard.js" defer></script>
     </body>
