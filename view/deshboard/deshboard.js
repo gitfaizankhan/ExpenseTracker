@@ -98,7 +98,7 @@ function leaderboard(data){
     leaderboardbtn.addEventListener('click', async (e)=>{
         try{
             const data = await axios.get('http://localhost:3000/purchase/showleaderboard');
-
+            console.log(data);
             // leader board data heading
             const thead = document.getElementById('headingHead');
             const headD = document.createElement('h3');
@@ -106,7 +106,7 @@ function leaderboard(data){
             headD.style.textAlign = 'center'
             headD.textContent = 'Leader Board'
             thead.append(headD);
-
+            console.log(data);
             for(let d in data.data){
                 showleaderboardData(data.data[d]);
             }
