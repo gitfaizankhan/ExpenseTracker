@@ -34,8 +34,8 @@ Order.belongsTo(User)
 
 async function syncDB() {
     try {
-        await dbConnection.sync({ alter: true });
-        // await dbConnection.sync();
+        // await dbConnection.sync({ force: true });
+        await dbConnection.sync();
         console.log('Database synchronized successfully!');
     } catch (error) {
         console.error('Error synchronizing database:', error);

@@ -1,5 +1,6 @@
 const Razorpay = require('razorpay');
 const Order = require('../models/purchaseData');
+const jwt = require('jsonwebtoken'); 
 
 exports.purchasepremium = async (req, res)=>{
     console.log("asdfgh asdfg ", req.user);
@@ -28,30 +29,26 @@ exports.purchasepremium = async (req, res)=>{
     }
 }
 
+function generateJWT(id) {
+    return jwt.sign({ userId: id }, process.env.TOKEN_SECRET);
+};
+
 
 exports.transactionStatus = async (req, res)=>{
     try{
         const {payment_id, order_id} = req.body;
-        Order.findOne({ where: { orderid: order_id}})
-        .then((order)=>{
-            order.update({paymentid: payment_id, status: 'SUCCESSFUL'})
-            .then(()=>{
-                req.user.update({ ispremiumuser : true})
-                .then(()=>{
-                    return res.status(202).json({
-                        success: true,
-                        message: 'Transaction Successful'
-                    }).catch((error)=>{
-                        throw new Error(error);
-                    });
-                }).catch((error)=>{
-                    throw new Error(error);
-                });
-            }).catch((error) => {
-                throw new Error(error);
+        let order = await Order.findOne({ where: { orderid: order_id}});
+
+        let users = await order.update({paymentid: payment_id, status: 'SUCCESSFUL'});
+        req.user.update({ ispremiumuser : true});
+        console.log("req.user", req.user.id);
+        return res.status(202).json({
+                success: true,
+                message: 'Transaction Successful',
+                token: generateJWT(req.user.id)
             });
-        })
     }catch(error){
         console.log(error);
     }
 }
+

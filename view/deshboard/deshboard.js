@@ -91,14 +91,15 @@ function premiumbtn(data){
                 "order_id": response.data.order.id,
 
                 "handler": async function (response) {
-                    await axios.post('http://localhost:3000/purchase/update_transaction_status', {
+                    const premiumresult = await axios.post('http://localhost:3000/purchase/update_transaction_status', {
                         order_id: options.order_id,
                         payment_id: response.rozarpay_payment_id,
                     }, {
                         headers: { 'Authorization': token }
                     });
-
                     alert('You are a Premium User Now');
+                    localStorage.setItem('token', premiumresult.data.token);
+                    window.location.href = "../deshboard/deshboard.html";
                 }
             };
             console.log("Options ", options);
