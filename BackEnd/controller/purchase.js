@@ -53,21 +53,20 @@ exports.transactionStatus = async (req, res)=>{
 
 exports.showleaderboard = async (req, res)=>{
     try{
-        const data = await expense.findAll({
-            attributes:[
-                'userId', [Sequelize.fn('SUM', Sequelize.col('amount')), 'total_quantity']
-            ],
-            group:['userId'],
-            order: [[Sequelize.fn('SUM', Sequelize.col('amount')), 'DESC']]
+        const data = await user.findAll({
+            attributes:['name', 'totalexpense'],
+            group:['id'],
+            order: [[Sequelize.fn('SUM', Sequelize.col('totalexpense')), 'DESC']]
         });
-        let leaderboarddata = {};
-        for(let d in data){
-            const username = await user.findByPk(data[d].userId, {
-                attributes:['id', 'name']
-            });
-            leaderboarddata[d] = { name: username.name, amount: data[d].dataValues.total_quantity };  
-        }
-        res.status(200).json(leaderboarddata);
+        // let leaderboarddata = {};
+        // for(let d in data){
+        //     const username = await user.findByPk(data[d].userId, {
+        //         attributes:['id', 'name']
+        //     });
+        //     leaderboarddata[d] = { name: username.name, amount: data[d].dataValues.total_quantity };  
+        // }
+        console.log(data);
+        res.status(200).json(data);
     }catch(error){
         console.log(error);
     }

@@ -1,7 +1,9 @@
 const expense = require('../models/expense');
+const User  = require('../models/user');
 
 exports.addExpense = async (req, res, next)=>{
     const userId =  req.user.id;
+
     try{
         let amount = req.body.amount;
         let description = req.body.description;
@@ -13,7 +15,16 @@ exports.addExpense = async (req, res, next)=>{
             category: category,
             userId: userId
         });
-        res.status(200).json(expenseResult);
+    const preexpenseAmount = await User.findByPk(userId, {
+        attributes: ['id', 'totalexpense']
+    });
+        totalExpenseData = preexpenseAmount.totalexpense + +amount;
+        console.log("asdf totalExpenseData", totalExpenseData);
+    await User.update(
+        { totalexpense: totalExpenseData },
+        { where: { id: userId } }
+    );
+    res.status(200).json(expenseResult);
     }catch(error){
         res.status(403).json(error);
     }

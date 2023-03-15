@@ -24,6 +24,9 @@ const userSchema = dbConnection.define('user', {
     ispremiumuser:{
         type: Sequelize.BOOLEAN,
         defaultValue: 0,
+    },
+    totalexpense:{
+        type: Sequelize.INTEGER
     }
 });
 

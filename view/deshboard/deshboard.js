@@ -98,7 +98,6 @@ function leaderboard(data){
     leaderboardbtn.addEventListener('click', async (e)=>{
         try{
             const data = await axios.get('http://localhost:3000/purchase/showleaderboard');
-            console.log(data);
             // leader board data heading
             const thead = document.getElementById('headingHead');
             const headD = document.createElement('h3');
@@ -106,7 +105,6 @@ function leaderboard(data){
             headD.style.textAlign = 'center'
             headD.textContent = 'Leader Board'
             thead.append(headD);
-            console.log(data);
             for(let d in data.data){
                 showleaderboardData(data.data[d]);
             }
@@ -124,14 +122,13 @@ function leaderboard(data){
 
 // leaderboard table data 
 function showleaderboardData(data){
-
+    console.log(data);
     const datatable = document.getElementById('leaderboarditem');
     let tr = document.createElement('tr');
     let name = document.createElement('td');
     let amount = document.createElement('td');
     name.innerText = `Name: ${data.name}`,
-    amount.innerText = `Total Expense: ${data.amount}`;
-
+    amount.innerText = `Total Expense: ${data.totalexpense}`;
     tr.append(name);
     tr.append(amount);
     datatable.append(tr);
@@ -150,6 +147,7 @@ function getPremiumButton(data){
     button.className = "btn btn-warning btn-lg ms-2"
     button.addEventListener('click', async (e) => {
         const token = localStorage.getItem('token');
+        console.log(token);
         const response = await axios.get('http://localhost:3000/purchase/premium_member', { headers: { 'Authorization': token } });
         var options = {
             "key": response.data.key_id,
