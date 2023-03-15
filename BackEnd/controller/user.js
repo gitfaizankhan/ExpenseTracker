@@ -11,11 +11,7 @@ exports.sign_up = async (req, res, next)=>{
         let password = req.body.password;
         const salt = 5; 
         await bcrypt.hash(password, salt, async (err, hash)=>{
-            let resultData = await user.create({
-                name: name,
-                email: email,
-                password: hash
-            });
+            let resultData = await user.create({ name: name, email: email, password: hash });
             res.json(resultData);
         });
     }catch(err){

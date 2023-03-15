@@ -9,7 +9,6 @@ const userAuth = async (req, res, next)=>{
         const userData = jwt.verify(token, process.env.TOKEN_SECRET)
         const user = await User.findByPk(userData.userId);
         req.user = user;
-        console.log("My sahfks ", req.user);
         next();
     }catch(error){
         console.log(error);
