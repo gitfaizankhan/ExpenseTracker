@@ -1,6 +1,9 @@
 const Razorpay = require('razorpay');
 const Order = require('../models/purchaseData');
 const jwt = require('jsonwebtoken'); 
+const expense = require('../models/expense');
+const usrd = require('../models/user');
+const { Sequelize, Op } = require('sequelize');
 
 exports.purchasepremium = async (req, res)=>{
     console.log("asdfgh asdfg ", req.user);
@@ -15,15 +18,14 @@ exports.purchasepremium = async (req, res)=>{
         await razp.orders.create({ amount, currency: "INR"}, (err, order)=>{
             if(err){
                 console.log(err);
-                // throw new Error(JSON.stringify(err));
+                throw new Error(JSON.stringify(err));
             }
             Order.create({orderid: order.id, status: 'PENDING'}).then(()=>{
                 return res.status(201).json({order, key_id: razp.key_id});
             }).catch(err=>{
                 throw new Error(err);
             });
-        })
-        // console.log("name ",name);
+        });
     }catch(error){
         res.status(403).json({message:'Something went wrong', error: error})
     }
@@ -52,3 +54,24 @@ exports.transactionStatus = async (req, res)=>{
     }
 }
 
+
+exports.showleaderboard = async (req, res)=>{
+    try{
+        const data = await expense.findAll({
+            attributes:[
+                'userId', [Sequelize.fn('SUM', Sequelize.col('amount')), 'total_quantity']
+            ],
+            group:['userId'],
+            order: [[Sequelize.fn('SUM', Sequelize.col('amount')), 'DESC']]
+        });
+        let obj3 = {};
+        for(let d in data){
+            const username = await usrd.findByPk(data[d].userId);
+            obj3[d] = { name: username.name, amount: data[d].dataValues.total_quantity };
+            
+        }
+        res.json(obj3);
+    }catch(error){
+        console.log(error);
+    }
+}

@@ -10,7 +10,7 @@ router.get('/premium_member', auth, purchaseController.purchasepremium);
 
 router.post('/update_transaction_status', auth, purchaseController.transactionStatus);
 
-// router.get('/showleaderboard' , auth, purchaseController.showleaderboard);
+router.get('/showleaderboard' , purchaseController.showleaderboard);
 
 
 module.exports = router;
