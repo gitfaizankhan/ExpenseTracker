@@ -21,7 +21,10 @@ const userSchema = dbConnection.define('user', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    ispremiumuser: Sequelize.BOOLEAN
+    ispremiumuser:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0,
+    }
 });
 
 module.exports = userSchema;
