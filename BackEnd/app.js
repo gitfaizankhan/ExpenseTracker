@@ -8,6 +8,7 @@ const Expense = require('./models/expense');
 const User = require('./models/user');
 const Order = require('./models/purchaseData');
 const purchaseRoute = require('./routes/purchase');
+const ForgetPassword = require('./models/forgetpassword');
 
 
 
@@ -25,12 +26,16 @@ app.use(cors());
 app.use('/user', userRoute);
 app.use('/expense', expenseRoute);
 app.use('/purchase', purchaseRoute);
+app.use('/password', userRoute);
 
 User.hasMany(Expense);
 Expense.belongsTo(User) 
 
 User.hasMany(Order)
 Order.belongsTo(User)
+
+User.hasMany(ForgetPassword)
+ForgetPassword.belongsTo(User)
 
 async function syncDB() {
     try {

@@ -55,7 +55,6 @@ function showOnWindow(data) {
     
     deleteB.type = 'button'
     deleteB.value = 'Delete'
-    deleteB.className = "btn btn-primary"
     deleteB.addEventListener('click', async (e) => {
         try {
             const token = localStorage.getItem('token');
@@ -74,14 +73,6 @@ function showOnWindow(data) {
     tbody.append(tr);
 }
 
-
-
-
-
-
-
-
-
 // premium leaderboard button action
 function leaderboard(data){
     // disable ==>  one time click button
@@ -94,15 +85,12 @@ function leaderboard(data){
     leaderboardbtn.type = 'button'
     leaderboardbtn.value = 'Show Leaderboard'
     leaderboardbtn.id = "leaderboard",
-    leaderboardbtn.className = "btn btn-info btn-lg ms-2"
     leaderboardbtn.addEventListener('click', async (e)=>{
         try{
             const data = await axios.get('http://localhost:3000/purchase/showleaderboard');
             // leader board data heading
             const thead = document.getElementById('headingHead');
             const headD = document.createElement('h3');
-            headD.className = 'mb-4 pt-3';
-            headD.style.textAlign = 'center'
             headD.textContent = 'Leader Board'
             thead.append(headD);
             for(let d in data.data){
@@ -122,7 +110,6 @@ function leaderboard(data){
 
 // leaderboard table data 
 function showleaderboardData(data){
-    console.log(data);
     const datatable = document.getElementById('leaderboarditem');
     let tr = document.createElement('tr');
     let name = document.createElement('td');
@@ -144,7 +131,6 @@ function getPremiumButton(data){
     button.type = 'button'
     button.value = 'Buy Premium'
     button.id = 'payment_button'
-    button.className = "btn btn-warning btn-lg ms-2"
     button.addEventListener('click', async (e) => {
         const token = localStorage.getItem('token');
         console.log(token);
@@ -193,9 +179,6 @@ function premiumbtn(data){
         const ispremiumuser = document.getElementById('isPremium');
         const premium = document.createElement('h6');
         premium.innerHTML = 'premium user';
-        premium.className = 'mb-4 pb-2 pb-md-0 mb-md-5 text-uppercase';
-        premium.style.textAlign = "right";
-        premium.style.fontWeight = "500"
         premium.style.color = "green";
         ispremiumuser.appendChild(premium);
     }
