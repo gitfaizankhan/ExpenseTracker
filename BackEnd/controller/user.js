@@ -1,8 +1,10 @@
 const user = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Sib = require('sib-api-v3-sdk');
 
-require('dotenv').config();
+require('dotenv').config()
+
 
 exports.sign_up = async (req, res, next)=>{
     try{
@@ -54,4 +56,42 @@ exports.login = async (req, res, next)=>{
     }catch(error){
         console.log(error);
     }
+}
+
+
+exports.forgetPassword = (req, res)=>{
+    const client = Sib.ApiClient.instance
+
+    const apiKey = client.authentications['api-key']
+    apiKey.apiKey = process.env.API_KEY
+
+    const tranEmailApi = new Sib.TransactionalEmailsApi()
+
+    const sender = {
+        email: 'faizankhaninfo9@gmail.com',
+        name: 'faizan khan',
+    }
+
+    const receivers = [
+        {
+            email: 'faizankcs099@gmail.com',
+        },
+    ]
+
+    tranEmailApi.sendTransacEmail({
+        sender,
+        to: receivers,
+        subject: 'no-reply',
+        textContent: `forget password`,
+        htmlContent: `<h1>Forgt Password</h1>`,
+        params: {
+            role: 'Frontend',
+        },
+
+    })
+    .then(result => {
+        console.log(result);
+    })
+    .catch(err => console.log(err));
+    console.log("Everything is good");
 }

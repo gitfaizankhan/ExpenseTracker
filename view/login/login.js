@@ -17,3 +17,14 @@ async function signin() {
         errorMessage.innerHTML = 'Error: ' + error.message;
     }
 }
+
+
+async function passwordforget(){
+    try{
+        // const token = localStorage.getItem('token');
+        let email = document.getElementById('registeremail').value;
+        const data = await axios.post('http://localhost:3000/user/password');
+    }catch(error){
+        console.log(error);
+    }
+}
