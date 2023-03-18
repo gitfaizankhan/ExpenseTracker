@@ -1,4 +1,3 @@
-const { json } = require('body-parser');
 const Sib = require('sib-api-v3-sdk');
 const forget = require('../models/forgetpassword')
 const user = require('../models/user')
@@ -31,7 +30,7 @@ exports.forgetPassword = async (req, res) => {
         to: receivers,
         subject: 'no-reply',
         textContent: `forget password`,
-        htmlContent: `<h1>http://localhost:3000/password/resetpassword/96c81373-6d2b-452f-a65d-6ce77e457e39</h1>`,
+        htmlContent: `<a href="http://127.0.0.1:5500/view/login/forgetpassword.html">click here</a>`,
         params: {
             role: 'Frontend',
         },
@@ -42,21 +41,17 @@ exports.forgetPassword = async (req, res) => {
         })
         .catch(err => console.log(err));
 
-        ////
-    const forgetuser = await user.findOne({
-            where: {
-                email: forgetemail
-            }
-        });
-    // const forgetuser = await forget.findOne({
-    //     where: {
-    //         email: forgetemail
-    //     }
-    // });
-
-    const resetRequest = await forget.create({ userId: forgetuser.id, isactive: true});
-    console.log(resetRequest);
-    console.log("Everything is good");
+        // 
+    const forgetuser = await user.findOne({ where: { email: forgetemail } });
+    const userexist = await forget.findOne({ where: { userId: forgetuser.id } });
+    if (userexist) {
+        await forget.update({ isactive: true }, { where: { userId: forgetuser.id } });
+    } else {
+        await forget.create({ userId: forgetuser.id, isactive: true });
+    }
+    const forgetId = await forget.findOne({ where: { userId: forgetuser.id } });
+    console.log("name", forgetId);
+    res.status(200).json(forgetId);
 }
 
 

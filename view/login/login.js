@@ -20,16 +20,16 @@ async function signin() {
 
 
 async function passwordforget(){
-    // const token = localStorage.getItem('token');
-
     try{
         let email = document.getElementById('registeremail').value;
         const forgetdata = {
             email
         }
-        const data = await axios.post('http://localhost:3000/password/forgotpassword', forgetdata);
-        // console.log(token);
+        const datad = await axios.post('http://localhost:3000/password/forgotpassword', forgetdata);
+        window.alert("Go to Email And Click On link");
+        localStorage.setItem('forgetid', datad.data.id);
     }catch(error){
+        alert("Please Enter Correct Email")
         console.log(error);
     }
 }
