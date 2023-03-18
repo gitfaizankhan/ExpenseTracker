@@ -1,11 +1,15 @@
+const { json } = require('body-parser');
 const Sib = require('sib-api-v3-sdk');
+const forget = require('../models/forgetpassword')
+const user = require('../models/user')
 
 require('dotenv').config()
 
 
-exports.forgetPassword = (req, res) => {
+exports.forgetPassword = async (req, res) => {
+    const forgetemail = req.body.email;
+    console.log(forgetemail)
     const client = Sib.ApiClient.instance
-
     const apiKey = client.authentications['api-key']
     apiKey.apiKey = process.env.API_KEY
 
@@ -18,7 +22,7 @@ exports.forgetPassword = (req, res) => {
 
     const receivers = [
         {
-            email: 'faizankcs099@gmail.com',
+            email: `${forgetemail}`,
         },
     ]
 
@@ -27,7 +31,7 @@ exports.forgetPassword = (req, res) => {
         to: receivers,
         subject: 'no-reply',
         textContent: `forget password`,
-        htmlContent: `<h1>Forgt Password</h1>`,
+        htmlContent: `<h1>http://localhost:3000/password/resetpassword/96c81373-6d2b-452f-a65d-6ce77e457e39</h1>`,
         params: {
             role: 'Frontend',
         },
@@ -37,6 +41,21 @@ exports.forgetPassword = (req, res) => {
             console.log(result);
         })
         .catch(err => console.log(err));
+
+        ////
+    const forgetuser = await user.findOne({
+            where: {
+                email: forgetemail
+            }
+        });
+    // const forgetuser = await forget.findOne({
+    //     where: {
+    //         email: forgetemail
+    //     }
+    // });
+
+    const resetRequest = await forget.create({ userId: forgetuser.id, isactive: true});
+    console.log(resetRequest);
     console.log("Everything is good");
 }
 

@@ -20,10 +20,15 @@ async function signin() {
 
 
 async function passwordforget(){
+    // const token = localStorage.getItem('token');
+
     try{
-        // const token = localStorage.getItem('token');
         let email = document.getElementById('registeremail').value;
-        const data = await axios.post('http://localhost:3000/user/password');
+        const forgetdata = {
+            email
+        }
+        const data = await axios.post('http://localhost:3000/password/forgotpassword', forgetdata);
+        // console.log(token);
     }catch(error){
         console.log(error);
     }
