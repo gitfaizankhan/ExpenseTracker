@@ -27,8 +27,10 @@ async function getExpenseData() {
     const token = localStorage.getItem('token');
     try {
         let expenseData = await axios.get('http://localhost:3000/expense/getExpense', { headers: { 'Authorization': token } });
-        const premiumData = expenseData.data.premium
-        premiumbtn(premiumData);
+        const premiumResult = expenseData.data.premium
+        downloadData(premiumResult);
+        premiumbtn(premiumResult);
+        
         for (let data of expenseData.data.expenseData) {
             showOnWindow(data);
         }
@@ -73,6 +75,22 @@ function showOnWindow(data) {
     tbody.append(tr);
 }
 
+function downloadData(premiumResult){
+    const diveElement = document.getElementById('downloadE');
+    var downloadAnchor = document.createElement('a');
+    downloadAnchor.href = '../file.pdf'
+    downloadAnchor.setAttribute("download", "");
+    var button = document.createElement("button");
+    button.textContent = "Download Expenses";
+    downloadAnchor.appendChild(button);
+    diveElement.appendChild(downloadAnchor);
+    let isDisabled = false;
+    if (premiumResult === false) {
+        isDisabled = !isDisabled;
+        button.disabled = isDisabled;
+    }
+    
+}
 // premium leaderboard button action
 function leaderboard(data){
     // disable ==>  one time click button
@@ -133,7 +151,6 @@ function getPremiumButton(data){
     button.id = 'payment_button'
     button.addEventListener('click', async (e) => {
         const token = localStorage.getItem('token');
-        console.log(token);
         const response = await axios.get('http://localhost:3000/purchase/premium_member', { headers: { 'Authorization': token } });
         var options = {
             "key": response.data.key_id,
@@ -167,7 +184,6 @@ function getPremiumButton(data){
 
 // premium Features Action
 function premiumbtn(data){
-    console.log("called");
     if(data === false){
         getPremiumButton(data);
     }else{
