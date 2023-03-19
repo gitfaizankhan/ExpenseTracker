@@ -12,9 +12,9 @@ async function signin() {
         localStorage.setItem('token', data.data.token);
         window.location.href = "../deshboard/deshboard.html";
     } catch (error) {
-
+        console.log(error.response.data.message)
         const errorMessage = document.getElementById('errorMessage');
-        errorMessage.innerHTML = 'Error: ' + error.message;
+        errorMessage.innerHTML = 'Error: ' + error.response.data.message;
     }
 }
 

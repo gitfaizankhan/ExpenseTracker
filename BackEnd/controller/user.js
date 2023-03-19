@@ -1,7 +1,6 @@
 const user = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Sib = require('sib-api-v3-sdk');
 
 require('dotenv').config()
 

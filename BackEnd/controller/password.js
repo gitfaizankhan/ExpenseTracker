@@ -1,11 +1,13 @@
 const Sib = require('sib-api-v3-sdk');
 const forget = require('../models/forgetpassword')
 const user = require('../models/user')
+const bcrypt = require('bcrypt');
 
 require('dotenv').config()
 
 
 exports.forgetPassword = async (req, res) => {
+    console.log("asdfgh ", req.body)
     const forgetemail = req.body.email;
     console.log(forgetemail)
     const client = Sib.ApiClient.instance
@@ -50,13 +52,31 @@ exports.forgetPassword = async (req, res) => {
         await forget.create({ userId: forgetuser.id, isactive: true });
     }
     const forgetId = await forget.findOne({ where: { userId: forgetuser.id } });
-    console.log("name", forgetId);
+    console.log("name", forgetId.id);
     res.status(200).json(forgetId);
 }
 
 
 exports.resetpassword = async (req, res)=>{
-    const id = req.user.id;
-    const expenseData = await expense.findByPk( id);
-    console.log(id)
+    const id =  req.body.forgetid;
+    const userexist = await forget.findByPk(id); 
+    console.log("UserExist ", userexist);
+    if(userexist.isactive){
+        const password = req.body.password;
+        console.log("userexist.id", userexist.userId);
+        console.log("password ", password);
+        const salt = 5;
+        await bcrypt.hash(password, salt, async (err, hash) => {
+            let resultData = await user.update({ password: hash }, { where: { id: userexist.userId } });
+            console.log(resultData)
+        });
+        const data = await forget.update({ isactive: false }, { where: { id: id } });
+        res.status(200).json(data);
+    }else{
+        res.status(404).json({
+            success: false,
+            message: "User Has Expire. Go to login & Try Again"
+        })
+    }
+    
 }
