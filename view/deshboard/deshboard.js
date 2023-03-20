@@ -89,6 +89,17 @@ function downloadData(premiumResult){
         isDisabled = !isDisabled;
         button.disabled = isDisabled;
     }
+
+    button.addEventListener('click', async (e)=>{
+        try{
+            const token = localStorage.getItem('token');
+            console.log(token);
+            const result = await axios.get('http://localhost:3000/expense/download/',  { headers: { 'Authorization': token } });
+            // const data = await axios.post('http://localhost:3000/expense/download', { headers: { 'Authorization': token } })
+        }catch(error){
+            console.log(error);
+        }
+    })
     
 }
 // premium leaderboard button action
