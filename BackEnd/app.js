@@ -10,7 +10,7 @@ const Order = require('./models/purchaseData');
 const purchaseRoute = require('./routes/purchase');
 const ForgetPassword = require('./models/forgetpassword');
 const passwordroute = require('./routes/password');
-
+const FileUrl = require('./models/fileUrlSave');
 
 
 const app = express();
@@ -37,6 +37,10 @@ Order.belongsTo(User)
 
 User.hasMany(ForgetPassword)
 ForgetPassword.belongsTo(User)
+
+User.hasMany(FileUrl)
+FileUrl.belongsTo(User)
+
 
 async function syncDB() {
     try {

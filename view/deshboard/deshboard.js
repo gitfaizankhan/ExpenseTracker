@@ -45,7 +45,6 @@ async function getExpenseData() {
 function showOnWindow(data) {
     let tbody = document.getElementById("items");
     let tr = document.createElement('tr');
-
     let am = document.createElement('td');
     let desc = document.createElement('td');
     let cate = document.createElement('td');
@@ -77,13 +76,13 @@ function showOnWindow(data) {
 
 function downloadData(premiumResult){
     const diveElement = document.getElementById('downloadE');
-    var downloadAnchor = document.createElement('a');
-    downloadAnchor.href = '../file.pdf'
-    downloadAnchor.setAttribute("download", "");
+    // var downloadAnchor = document.createElement('a');
+    // downloadAnchor.href = '../file.pdf'
+    // downloadAnchor.setAttribute("download", "");
     var button = document.createElement("button");
     button.textContent = "Download Expenses";
-    downloadAnchor.appendChild(button);
-    diveElement.appendChild(downloadAnchor);
+    // downloadAnchor.appendChild(button);
+    diveElement.appendChild(button);
     let isDisabled = false;
     if (premiumResult === false) {
         isDisabled = !isDisabled;
@@ -93,9 +92,12 @@ function downloadData(premiumResult){
     button.addEventListener('click', async (e)=>{
         try{
             const token = localStorage.getItem('token');
-            console.log(token);
-            const result = await axios.get('http://localhost:3000/expense/download/',  { headers: { 'Authorization': token } });
-            // const data = await axios.post('http://localhost:3000/expense/download', { headers: { 'Authorization': token } })
+            // console.log(token);
+            const result = await axios.get('http://localhost:3000/expense/download/',  { headers: { 'Authorization': token } }); 
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.href = result.data.fileUrl;
+            downloadAnchor.download = 'Expence.txt';
+            downloadAnchor.click();
         }catch(error){
             console.log(error);
         }
@@ -104,11 +106,6 @@ function downloadData(premiumResult){
 }
 // premium leaderboard button action
 function leaderboard(data){
-    // disable ==>  one time click button
-    // let isDisabled = false; 
-    // isDisabled = !isDisabled;
-    // leaderboardbtn.disabled = isDisabled;
-    
     let diveElement = document.getElementById('premiumbtn');
     var leaderboardbtn = document.createElement('input');
     leaderboardbtn.type = 'button'
@@ -209,4 +206,37 @@ function premiumbtn(data){
         premium.style.color = "green";
         ispremiumuser.appendChild(premium);
     }
+}
+
+
+// downloaded file url
+getdownloadedurl();
+
+async function getdownloadedurl(){
+   
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://localhost:3000/expense/downloadfileurl', { headers: { 'Authorization': token } });
+    response.data.forEach(element => {
+        showUrlData(element)
+        
+    });
+    
+}
+
+
+// show url data in able
+function showUrlData(element) {
+    const table = document.getElementById('fileurl')
+    let tr = document.createElement('tr');
+    let userId = document.createElement('td');
+    let url = document.createElement('td');
+    var downloadAnchor = document.createElement('a');
+    downloadAnchor.href = `${element.url}`
+    var filename = element.url.substring(element.url.lastIndexOf('/') + 1);
+    downloadAnchor.textContent = `${filename}`
+    url.appendChild(downloadAnchor);
+    userId.innerText = `${element.userId}`;
+    tr.append(url);
+    tr.append(userId);
+    table.append(tr);
 }
