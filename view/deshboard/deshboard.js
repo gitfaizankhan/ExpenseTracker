@@ -262,7 +262,7 @@ async function getProducts(page){
 window.addEventListener('DOMContentLoaded', async () => {
     const page = 1;
     const dara = await getProducts(page);
-    const { premium, paginationDetails } = dara;
+    const { premium, paginationDetails } = dara.data;
     downloadData(paginationDetails);
     premiumbtn(premium);
 })
