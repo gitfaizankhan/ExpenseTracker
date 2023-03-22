@@ -31,19 +31,17 @@ exports.addExpense = async (req, res, next)=>{
 exports.getExpense = async (req, res, next)=>{
     try{
         const premium  = req.user.ispremiumuser;
-        console.log("req.query.page ", req.query.page)
+        let itemPage = req.header('items');
         const page =   +req.query.page;
-        const ITEM_PER_PAGE = 2;
+        const ITEM_PER_PAGE = +itemPage;
         let totalItems;
         
         const total = await expense.count({ where: { userId: req.user.id }})
-        console.log("total ", total)
         totalItems = total;
         const e = await expense.findAll({ where: { userId: req.user.id } ,
             offset: (page-1)* ITEM_PER_PAGE,
             limit: ITEM_PER_PAGE
         })
-        // console.log(e)
         res.json({
             expense: e,
             premium: premium,

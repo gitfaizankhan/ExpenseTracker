@@ -11,7 +11,6 @@ async function addExpense(){
             category
         }
         const result = await axios.post('http://localhost:3000/expense/addExpense/', expenseData, { headers: {'Authorization': token}});
-        console.log(result.data)
         showOnWindowData(result.data)
     }catch(error){
         console.log(error);
@@ -222,6 +221,7 @@ function showUrlData(element) {
 // pagination
 
 function showPagination(paginationDetails){
+
     const { currentPage, hasNextPage, hasPreviousPage, lastPage, nextPage, previousPage }  = paginationDetails;
     pagination.innerHTML = '';
 
@@ -248,7 +248,13 @@ function showPagination(paginationDetails){
 
 async function getProducts(page){
     const token = localStorage.getItem('token');
-    const expenseData = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}`, { headers: { 'Authorization': token } });
+    const item = document.getElementById('items-per-page').value;
+    const itemPerPage = document.getElementById('items-per-page');
+    itemPerPage.addEventListener('change', (event) => {
+        selectedValue = event.target.value;
+        getProducts(page);
+    });
+    const expenseData = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}`, { headers: { 'Authorization': token, 'items': item } });
     showOnWindow(expenseData.data.expense);
     showPagination(expenseData.data.paginationDetails)
     return expenseData;
