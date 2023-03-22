@@ -31,10 +31,31 @@ exports.addExpense = async (req, res, next)=>{
 exports.getExpense = async (req, res, next)=>{
     try{
         const premium  = req.user.ispremiumuser;
-        const expenseData = await expense.findAll(
-            { where:{userId: req.user.id}}
-            );
-        res.status(200).json({expenseData: expenseData, premium: premium});
+        console.log("req.query.page ", req.query.page)
+        const page =   +req.query.page;
+        const ITEM_PER_PAGE = 2;
+        let totalItems;
+        
+        const total = await expense.count({ where: { userId: req.user.id }})
+        console.log("total ", total)
+        totalItems = total;
+        const e = await expense.findAll({ where: { userId: req.user.id } ,
+            offset: (page-1)* ITEM_PER_PAGE,
+            limit: ITEM_PER_PAGE
+        })
+        // console.log(e)
+        res.json({
+            expense: e,
+            premium: premium,
+            paginationDetails:{
+                currentPage: page,
+                hasNextPage: ITEM_PER_PAGE * page < totalItems,
+                nextPage: page + 1,
+                hasPreviousPage: page > 1,
+                previousPage: page -1,
+                lastPage: Math.ceil(totalItems / ITEM_PER_PAGE),
+            }
+        })
     }catch(error){
         res.status(403).json(error);
     }

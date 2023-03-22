@@ -11,77 +11,60 @@ async function addExpense(){
             category
         }
         const result = await axios.post('http://localhost:3000/expense/addExpense/', expenseData, { headers: {'Authorization': token}});
-        showOnWindow(result.data);
+        console.log(result.data)
+        showOnWindowData(result.data)
     }catch(error){
         console.log(error);
     }
 }
 
+function showOnWindowData(data){
+    let tbody = document.getElementById("items");
+        let tr = document.createElement('tr');
+        let am = document.createElement('td');
+        let desc = document.createElement('td');
+        let cate = document.createElement('td');
+        let btnD = document.createElement('td');
+        am.innerText = data.amount;
+        desc.innerText = data.description;
+        cate.innerText = data.category;
+        var deleteB = document.createElement('input');
 
-
-
-// get user expense
-getExpenseData();
-
-async function getExpenseData() {
-    const token = localStorage.getItem('token');
-    try {
-        let expenseData = await axios.get('http://localhost:3000/expense/getExpense', { headers: { 'Authorization': token } });
-        const premiumResult = expenseData.data.premium
-        downloadData(premiumResult);
-        premiumbtn(premiumResult);
-        
-        for (let data of expenseData.data.expenseData) {
-            showOnWindow(data);
-        }
-    } catch (error) {
-        console.log(error);
-    }
+        deleteB.type = 'button'
+        deleteB.value = 'Delete'
+        deleteB.addEventListener('click', async (e) => {
+            try {
+                const token = localStorage.getItem('token');
+                const result = await axios.delete('http://localhost:3000/expense/delete/' + data.id, { headers: { 'Authorization': token } });
+                tr.remove();
+            } catch (error) {
+                console.log(error);
+            }
+        });
+        btnD = tr.insertCell(btnD);
+        btnD.appendChild(deleteB);
+        tr.append(am);
+        tr.append(desc);
+        tr.append(cate);
+        tr.append(btnD);
+        tbody.append(tr);
 }
 
 
-
 // Show User Expense
-function showOnWindow(data) {
+function showOnWindow(dat) {
     let tbody = document.getElementById("items");
-    let tr = document.createElement('tr');
-    let am = document.createElement('td');
-    let desc = document.createElement('td');
-    let cate = document.createElement('td');
-    let btnD = document.createElement('td');
-    am.innerText = data.amount;
-    desc.innerText = data.description;
-    cate.innerText = data.category;
-    var deleteB = document.createElement('input');
+    tbody.innerHTML = ''
+    for (let data of dat) {
+        showOnWindowData(data);    
+    }
     
-    deleteB.type = 'button'
-    deleteB.value = 'Delete'
-    deleteB.addEventListener('click', async (e) => {
-        try {
-            const token = localStorage.getItem('token');
-            const result = await axios.delete('http://localhost:3000/expense/delete/' + data.id, { headers: {'Authorization': token}});
-            tr.remove();
-        } catch (error) {
-            console.log(error);
-        }
-    });
-    btnD = tr.insertCell(btnD);
-    btnD.appendChild(deleteB);
-    tr.append(am);
-    tr.append(desc);
-    tr.append(cate);
-    tr.append(btnD);
-    tbody.append(tr);
 }
 
 function downloadData(premiumResult){
     const diveElement = document.getElementById('downloadE');
-    // var downloadAnchor = document.createElement('a');
-    // downloadAnchor.href = '../file.pdf'
-    // downloadAnchor.setAttribute("download", "");
     var button = document.createElement("button");
     button.textContent = "Download Expenses";
-    // downloadAnchor.appendChild(button);
     diveElement.appendChild(button);
     let isDisabled = false;
     if (premiumResult === false) {
@@ -104,6 +87,7 @@ function downloadData(premiumResult){
     })
     
 }
+
 // premium leaderboard button action
 function leaderboard(data){
     let diveElement = document.getElementById('premiumbtn');
@@ -130,10 +114,6 @@ function leaderboard(data){
     diveElement.appendChild(leaderboardbtn);
 }
 
-
-
-
-
 // leaderboard table data 
 function showleaderboardData(data){
     const datatable = document.getElementById('leaderboarditem');
@@ -146,9 +126,6 @@ function showleaderboardData(data){
     tr.append(amount);
     datatable.append(tr);
 }
-
-
-
 
 // Premium Button Details
 function getPremiumButton(data){
@@ -240,3 +217,46 @@ function showUrlData(element) {
     tr.append(userId);
     table.append(tr);
 }
+
+
+// pagination
+
+function showPagination(paginationDetails){
+    const { currentPage, hasNextPage, hasPreviousPage, lastPage, nextPage, previousPage }  = paginationDetails;
+    pagination.innerHTML = '';
+
+    if(hasPreviousPage){
+        const btn2 = document.createElement('button')
+        btn2.innerHTML = previousPage
+        btn2.addEventListener('click', () => getProducts(previousPage))
+        pagination.appendChild(btn2)
+    }
+
+    const btn1 = document.createElement('button')
+    btn1.innerHTML = `<h3>${currentPage}</h3>`
+    btn1.addEventListener('click', () => getProducts(currentPage))
+    pagination.appendChild(btn1);
+
+    if(hasNextPage){
+        const btn3 = document.createElement('button')
+        btn3.innerHTML = nextPage
+        btn3.addEventListener('click', () => getProducts(nextPage))
+        pagination.appendChild(btn3)
+    }
+}
+
+
+async function getProducts(page){
+    const token = localStorage.getItem('token');
+    const expenseData = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}`, { headers: { 'Authorization': token } });
+    showOnWindow(expenseData.data.expense);
+    showPagination(expenseData.data.paginationDetails)
+    return expenseData;
+}
+window.addEventListener('DOMContentLoaded', async () => {
+    const page = 1;
+    const dara = await getProducts(page);
+    const { premium, paginationDetails } = dara;
+    downloadData(paginationDetails);
+    premiumbtn(premium);
+})
