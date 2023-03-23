@@ -27,6 +27,7 @@ function generateJWT(id){
 
 
 exports.login = async (req, res, next)=>{
+    console.log("hello");
     try{
         let loginEmail = req.body.email;
         let loginPass = req.body.password;

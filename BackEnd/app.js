@@ -53,7 +53,6 @@ FileUrl.belongsTo(User)
 
 async function syncDB() {
     try {
-        // await dbConnection.sync({ force: true });
         await dbConnection.sync();
         console.log('Database synchronized successfully!');
     } catch (error) {
@@ -61,7 +60,6 @@ async function syncDB() {
     }
 }
 syncDB();
-
 
 app.listen(3000, ()=>{
     console.log('server is running on http://localhost:3000/')
