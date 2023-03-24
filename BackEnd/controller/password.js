@@ -2,14 +2,13 @@ const Sib = require('sib-api-v3-sdk');
 const forget = require('../models/forgetpassword')
 const user = require('../models/user')
 const bcrypt = require('bcrypt');
-
 require('dotenv').config()
 
-
+// Active forget password id
 exports.forgetPassword = async (req, res) => {
-    console.log("asdfgh ", req.body)
+
     const forgetemail = req.body.email;
-    console.log(forgetemail)
+
     const client = Sib.ApiClient.instance
     const apiKey = client.authentications['api-key']
     apiKey.apiKey = process.env.API_KEY
@@ -17,8 +16,8 @@ exports.forgetPassword = async (req, res) => {
     const tranEmailApi = new Sib.TransactionalEmailsApi()
 
     const sender = {
-        email: 'faizankhaninfo9@gmail.com',
-        name: 'faizan khan',
+        email: process.env.SENDER_EMAIL,
+        name: process.env.SENDER_NAME,
     }
 
     const receivers = [
@@ -32,7 +31,7 @@ exports.forgetPassword = async (req, res) => {
         to: receivers,
         subject: 'no-reply',
         textContent: `forget password`,
-        htmlContent: `<a href="http://127.0.0.1:5500/view/login/forgetpassword.html">click here</a>`,
+        htmlContent: `<a href="${process.env.FORGET_PASSWORD_PAGE}">click here</a>`,
         params: {
             role: 'Frontend',
         },
@@ -52,23 +51,18 @@ exports.forgetPassword = async (req, res) => {
         await forget.create({ userId: forgetuser.id, isactive: true });
     }
     const forgetId = await forget.findOne({ where: { userId: forgetuser.id } });
-    console.log("name", forgetId.id);
     res.status(200).json(forgetId);
 }
 
-
+// reset password
 exports.resetpassword = async (req, res)=>{
     const id =  req.body.forgetid;
     const userexist = await forget.findByPk(id); 
-    console.log("UserExist ", userexist);
     if(userexist.isactive){
         const password = req.body.password;
-        console.log("userexist.id", userexist.userId);
-        console.log("password ", password);
         const salt = 5;
         await bcrypt.hash(password, salt, async (err, hash) => {
-            let resultData = await user.update({ password: hash }, { where: { id: userexist.userId } });
-            console.log(resultData)
+            await user.update({ password: hash }, { where: { id: userexist.userId } });
         });
         const data = await forget.update({ isactive: false }, { where: { id: id } });
         res.status(200).json(data);

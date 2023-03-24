@@ -1,7 +1,11 @@
+// User Expense Store Database Table
+
 const Sequelize = require('sequelize');
 const dbConnection = require('../utils/dbConnection');
 
-const expenseSchema = dbConnection.define('expenses', {
+require('dotenv').config();
+
+const expenseSchema = dbConnection.define(process.env.EXPENSE_TABLE , {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,

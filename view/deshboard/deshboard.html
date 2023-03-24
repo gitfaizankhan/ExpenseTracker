@@ -7,6 +7,8 @@
         <title>Dashboard</title>
     </head>
     <body style="background-image: linear-gradient(to right, #c6ffdd8a, #ae9b6f80, #e98e918c, #c6ffdd97);">
+        <!-- Start -->
+        <!--  Add User Expense -->
         <div id="isPremium">
             <h4>Add Expense</h4>
         </div>
@@ -25,15 +27,20 @@
                 </select>
                 <button type="button" onclick="addExpense()">Add Expense</button>
         </form>
+        <!-- End -->
+        <!-- Get Premium Membership Button  -->
         <div id="premiumbtn">
             <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
         </div>
         <br>
 
+        <!-- Download Data -->
         <div id="downloadE">
         
         </div>
-        
+
+
+        <!-- User Expense Details -->
         <div>
             <h3 >Your Expense</h3>
             <table border = "2px">
@@ -41,6 +48,7 @@
                 </tbody>
             </table>
             <br>
+            <!-- pagination  -->
             <label for="items-per-page">Items per page:</label>
             <select id="items-per-page" >
                 <option value="1">1</option>
@@ -51,6 +59,8 @@
             <a id="pagination">
             </a>
         </div>
+
+        <!-- Leaer Deshboard -->
         <div id="headingHead">
 
         </div>
@@ -60,6 +70,7 @@
             </tbody>
         </table>
 
+        <!-- Expense Files Url -->
         <div>
             <h3>Downloaded File Url</h3>
         </div>
@@ -72,7 +83,6 @@
             </thead>
             <tbody id="fileurl">
             </tbody>
-        
         </table>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="./deshboard.js" defer></script>

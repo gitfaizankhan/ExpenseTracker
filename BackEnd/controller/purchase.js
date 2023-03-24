@@ -1,10 +1,11 @@
 const Razorpay = require('razorpay');
-const Order = require('../models/purchaseData');
+const PaymentOrder = require('../models/purchaseData');
 const jwt = require('jsonwebtoken'); 
-const expense = require('../models/expense');
 const user = require('../models/user');
-const { Sequelize, Op } = require('sequelize');
+const { Sequelize} = require('sequelize');
 
+
+// purchase premium membership
 exports.purchasepremium = async (req, res)=>{
     try{
         var razp = new Razorpay({
@@ -12,12 +13,12 @@ exports.purchasepremium = async (req, res)=>{
             key_secret: process.env.RAZORPAY_KEY_SECRET
         });
         
-        const amount = 100;
+        const amount = 100;  // 100 means 1rs
         await razp.orders.create({ amount, currency: "INR"}, async (err, order)=>{
             if(err){
                 throw new Error(JSON.stringify(err));
             }
-            await Order.create({orderid: order.id, status: 'PENDING'});
+            await PaymentOrder.create({orderid: order.id, status: 'PENDING'});
             return res.status(201).json({order, key_id: razp.key_id});
         });
     }catch(error){
@@ -25,15 +26,18 @@ exports.purchasepremium = async (req, res)=>{
     }
 }
 
+// generate new token for premium user
 function generateJWT(id) {
     return jwt.sign({ userId: id }, process.env.TOKEN_SECRET);
 };
 
 
+
+// update transaction status
 exports.transactionStatus = async (req, res)=>{
     try{
         const {payment_id, order_id} = req.body;
-        let order = await Order.findOne({ where: { orderid: order_id}});
+        let order = await PaymentOrder.findOne({ where: { orderid: order_id}});
 
         let users = await order.update({paymentid: payment_id, status: 'SUCCESSFUL'});
         req.user.update({ ispremiumuser : true});
@@ -48,6 +52,7 @@ exports.transactionStatus = async (req, res)=>{
 }
 
 
+// Show Premium User Leaderboard
 exports.showleaderboard = async (req, res)=>{
     try{
         const data = await user.findAll({

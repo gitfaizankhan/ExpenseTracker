@@ -4,7 +4,7 @@
   "description": "**html file ==> html/signup.html**\r **page background image ==> images/wall.png**\r **action file ==>  script/signup.js**",
   "main": "app.js",
   "scripts": {
-    "start": "app.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

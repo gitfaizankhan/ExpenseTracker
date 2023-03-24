@@ -17,6 +17,8 @@ async function addExpense(){
     }
 }
 
+
+
 function showOnWindowData(data){
     let tbody = document.getElementById("items");
         let tr = document.createElement('tr');
@@ -96,7 +98,8 @@ function leaderboard(data){
     leaderboardbtn.id = "leaderboard",
     leaderboardbtn.addEventListener('click', async (e)=>{
         try{
-            const data = await axios.get('http://localhost:3000/purchase/showleaderboard');
+            const token = localStorage.getItem('token');
+            const data = await axios.get('http://localhost:3000/purchase/showleaderboard', { headers: { 'Authorization': token } });
             // leader board data heading
             const thead = document.getElementById('headingHead');
             const headD = document.createElement('h3');

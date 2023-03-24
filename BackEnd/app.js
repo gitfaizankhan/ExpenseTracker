@@ -16,7 +16,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
 
-
+require('dotenv').config();
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use(helmet());
 app.use(compression());
 app.use(morgan('combined', { stream: logStream }));
 
-// test
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cors());
@@ -53,6 +53,7 @@ FileUrl.belongsTo(User)
 
 async function syncDB() {
     try {
+        // await dbConnection.sync({force:true});
         await dbConnection.sync();
         console.log('Database synchronized successfully!');
     } catch (error) {
@@ -61,6 +62,6 @@ async function syncDB() {
 }
 syncDB();
 
-app.listen(3000, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log('server is running on http://localhost:3000/')
 });

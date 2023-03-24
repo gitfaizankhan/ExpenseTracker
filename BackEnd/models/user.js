@@ -1,7 +1,10 @@
+// Registered Users Personal Details Database Table 
+
 const { Sequelize } = require('sequelize');
 const dbConnection = require('../utils/dbConnection');
+require('dotenv').config()
 
-const userSchema = dbConnection.define('user', {
+const userSchema = dbConnection.define(process.env.USER_LOGIN, {
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,

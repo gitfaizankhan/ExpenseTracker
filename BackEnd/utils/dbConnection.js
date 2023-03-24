@@ -1,8 +1,11 @@
-const Sequelize = require('sequelize');
+// Create Expense Tracker Database
 
-const dbConnection = new Sequelize('expense_tracker', 'root', 'root', 
+const Sequelize = require('sequelize');
+require('dotenv').config()
+
+const dbConnection = new Sequelize(process.env.DATABASE_NAME, process.env.USER_NAME, process.env.PASSWORD, 
     {
-        dialect:'mysql', host:'localhost'
+        dialect:'mysql', host:process.env.HOST
     }
 );
 
