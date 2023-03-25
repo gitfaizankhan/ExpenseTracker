@@ -7,6 +7,7 @@ const { Sequelize} = require('sequelize');
 
 // purchase premium membership
 exports.purchasepremium = async (req, res)=>{
+    con
     try{
         var razp = new Razorpay({
             key_id: process.env.RAZORPAY_KEY_ID,

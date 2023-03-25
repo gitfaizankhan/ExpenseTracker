@@ -180,7 +180,7 @@ function premiumbtn(data){
 
         // premium status
         const ispremiumuser = document.getElementById('isPremium');
-        const premium = document.createElement('h6');
+        const premium = document.createElement('h3');
         premium.innerHTML = 'premium user';
         premium.style.color = "green";
         ispremiumuser.appendChild(premium);
@@ -255,6 +255,7 @@ async function getProducts(page){
     const itemPerPage = document.getElementById('items-per-page');
     itemPerPage.addEventListener('change', (event) => {
         selectedValue = event.target.value;
+        const page = 1;
         getProducts(page);
     });
     const expenseData = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}`, { headers: { 'Authorization': token, 'items': item } });
