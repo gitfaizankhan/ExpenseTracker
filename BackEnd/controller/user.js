@@ -15,8 +15,8 @@ exports.sign_up = async (req, res, next)=>{
 }
 
 // Generate JWT
-function generateJWT(id){
-    return jwt.sign({ userId: id }, process.env.TOKEN_SECRET);
+function generateJWT(email){
+    return jwt.sign({ email: email }, process.env.TOKEN_SECRET);
 };
 
 
@@ -26,13 +26,12 @@ exports.login = async (req, res, next)=>{
         let loginEmail = req.body.email;
         let loginPass = req.body.password;
         let userExist = await users.getUser(loginEmail);
-
         if (userExist !== null){
             if (bcrypt.compareSync(loginPass, userExist.password)){
                 res.status(200).json({
                     message: "User Logged in successfully",
                     success: true,
-                    token: generateJWT(userExist.id)
+                    token: generateJWT(userExist.email)
                 });
             }else{
                 res.status(401).json({

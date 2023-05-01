@@ -1,20 +1,27 @@
-// // Premioum User Payment Details Database Table 
+const mongoose = require('mongoose');
 
-// const Sequelize = require("sequelize")
+const orderData = new mongoose.Schema({
+    paymentid: {
+        type: String,
+        required: true
+    },
+    orderid: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+});
 
-// const sequelize = require('../utils/dbConnection');
-// require('dotenv').config()
 
-// const orderData = sequelize.define(process.env.GET_ORDER, {
-//     id:{
-//         type: Sequelize.INTEGER,
-//         autoIncrement: true,
-//         allowNull: false,
-//         primaryKey: true
-//     },
-//     paymentid: Sequelize.STRING,
-//     orderid: Sequelize.STRING,
-//     status: Sequelize.STRING
-// })
+const OrderData = mongoose.model('Orders', orderData);
 
-// module.exports = orderData;
+module.exports = OrderData;
+
+

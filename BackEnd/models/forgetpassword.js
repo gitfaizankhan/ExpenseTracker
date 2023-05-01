@@ -1,24 +1,16 @@
-// // Forget Password Conformation Database Table 
+const mongoose = require('mongoose');
 
-// const Sequelize = require('sequelize');
-// const dbConnection = require('../utils/dbConnection');
-// const { v4: uuidv4 } = require('uuid');
-// require('dotenv').config()
+const forgetPassword = new mongoose.Schema({
+    isactive: {
+        type: Boolean,
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+});
 
-// const forgetPassword = dbConnection.define(process.env.FORGET_PASSWORD, {
-//     id:{
-//         type: Sequelize.UUID,
-//         defaultValue: Sequelize.UUIDV4,
-//         allowNull: false,
-//         primaryKey: true
-//     },
-//    userId: {
-//         type: Sequelize.INTEGER,
-//         allowNull: false,
-//     },
-//     isactive: {
-//         type: Sequelize.BOOLEAN
-//     }
-// })
+const ForgetPassowrd = mongoose.model('ForgetPassword', forgetPassword);
 
-// module.exports = forgetPassword;
+module.exports = ForgetPassowrd;

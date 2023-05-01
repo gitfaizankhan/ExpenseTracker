@@ -10,18 +10,18 @@ const userAuth = require('../middleware/auth');
 const router = express.Router();
 
 // Add
-router.post('/addExpense', userAuth,  expenseController.addExpense);
+router.post('/addExpense', userAuth, expenseController.postExpense);
 
 // Get
-router.get('/getExpense', userAuth,   expenseController.getExpense);
+// router.get('/getExpense', userAuth,   expenseController.getExpense);
 
 // Delete
-router.delete('/delete/:id', userAuth,  expenseController.deleteExpense);
+// router.delete('/delete/:id', userAuth,  expenseController.deleteExpense);
 
 // Download Data in File Format
-router.get('/download', userAuth, downloadfile.downloadData);
+// router.get('/download', userAuth, downloadfile.downloadData);
 
 // Downloaded Files Url
-router.get('/downloadfileurl', userAuth, downloadfile.fileurl)
+// router.get('/downloadfileurl', userAuth, downloadfile.fileurl)
 
 module.exports = router;

@@ -1,16 +1,16 @@
-// // Previous Downloaded Files Details Database Table
+const mongoose = require('mongoose');
 
-// const Sequelize = require('sequelize');
-// const dbConnection = require('../utils/dbConnection');
-// require('dotenv').config()
+const fileUrls = new mongoose.Schema({
+    url: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+});
 
-// const fileUrl = dbConnection.define(process.env.FILE_URL_SAVE , {
-
-//     url:{
-//         type: Sequelize.STRING,
-//         allowNull: false,
-//         unique: true
-//     }
-// })
-
-// module.exports = fileUrl;
+const FileUrls = mongoose.model('FileUrls', fileUrls);
+module.exports = FileUrls;

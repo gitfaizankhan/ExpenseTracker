@@ -1,29 +1,25 @@
-// // User Expense Store Database Table
+const mongoose = require('mongoose');
 
-// const Sequelize = require('sequelize');
-// const dbConnection = require('../utils/dbConnection');
+const expense = new mongoose.Schema({
+    amount: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
+});
 
-// require('dotenv').config();
 
-// const expenseSchema = dbConnection.define(process.env.EXPENSE_TABLE , {
-//     id: {
-//         type: Sequelize.INTEGER,
-//         allowNull: false,
-//         autoIncrement: true,
-//         primaryKey: true,
-//     },
-//     amount: {
-//         type: Sequelize.INTEGER,
-//         allowNull: false
-//     },
-//     description: {
-//         type: Sequelize.STRING,
-//         allowNull: false
-//     },
-//     category: {
-//         type: Sequelize.STRING,
-//         allowNull: false
-//     },
-// });
+const Expense = mongoose.model('Expense', expense);
 
-// module.exports = expenseSchema;
+module.exports = Expense;
