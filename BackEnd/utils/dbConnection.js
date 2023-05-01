@@ -1,12 +1,29 @@
-// Create Expense Tracker Database
+const mongodb = require('mongodb');
 
-const Sequelize = require('sequelize');
-require('dotenv').config()
+const MongoClient = mongodb.MongoClient;
 
-const dbConnection = new Sequelize(process.env.DATABASE_NAME, process.env.USER_NAME, process.env.PASSWORD, 
-    {
-        dialect:'mysql', host:process.env.HOST
+let _db;
+
+const mongoClient = callback => {
+    MongoClient.connect('mongodb://0.0.0.0:27017/expense', { useUnifiedTopology: true })
+        .then(client => {
+            console.log('Connected!');
+            _db = client.db();
+            callback();            
+        })
+        .catch(err =>{
+            console.log(err);
+            throw err;
+        });
+}
+
+const getDb = () =>{
+    if(_db){
+        return _db;
     }
-);
+    throw 'Database not found!'
+}
 
-module.exports = dbConnection;
+
+exports.MongoClient = mongoClient;
+exports.getDb = getDb;

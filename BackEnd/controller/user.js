@@ -1,20 +1,14 @@
-const user = require('../models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
+const jwt = require('jsonwebtoken');
+const users = require('../services/user');
+const bcrypt = require('bcrypt');
 require('dotenv').config()
 
 // Register New User
 exports.sign_up = async (req, res, next)=>{
     try{
-        let name = req.body.name;
-        let email = req.body.email;
-        let password = req.body.password;
-        const salt = 5; 
-        await bcrypt.hash(password, salt, async (err, hash)=>{
-            let resultData = await user.create({ name: name, email: email, password: hash });
-            res.status(200).json(resultData);
-        });
+        const resultData = users.addUser(req.body);
+        res.status(200).json(resultData);
     }catch(err){
         res.status(403).json(err);
     }
@@ -28,13 +22,10 @@ function generateJWT(id){
 
 // Login User
 exports.login = async (req, res, next)=>{
-    console.log("hello");
     try{
         let loginEmail = req.body.email;
         let loginPass = req.body.password;
-        let userExist = await user.findOne({where:{
-            email: loginEmail
-        }});
+        let userExist = await users.getUser(loginEmail);
 
         if (userExist !== null){
             if (bcrypt.compareSync(loginPass, userExist.password)){

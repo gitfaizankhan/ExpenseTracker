@@ -1,36 +1,29 @@
-// Registered Users Personal Details Database Table 
+const mongoose = require('mongoose');
 
-const { Sequelize } = require('sequelize');
-const dbConnection = require('../utils/dbConnection');
-require('dotenv').config()
-
-const userSchema = dbConnection.define(process.env.USER_LOGIN, {
-    id:{
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    name:{
-        type: Sequelize.STRING,
-        allowNull:false
-    },
-    email:{
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    },
-    password:{
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    ispremiumuser:{
-        type: Sequelize.BOOLEAN,
-        defaultValue: 0,
-    },
-    totalexpense:{
-        type: Sequelize.INTEGER
-    }
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  isPremiumUser: {
+    type: Boolean,
+    default: false
+  },
+  totalExpense: {
+    type: Number,
+    default: 0
+  }
 });
 
-module.exports = userSchema;
+const User = mongoose.model('users', userSchema);
+
+module.exports = User;

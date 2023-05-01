@@ -4,6 +4,7 @@ const sequelize   = require('../utils/dbConnection');
 
 // Add User Expense
 exports.addExpense = async (req, res, next)=>{
+    console.log("Hello Everyone")
     const transaction = await sequelize.transaction();
     const userId =  req.user.id;
     try{
