@@ -21,3 +21,20 @@ exports.getUser = async (email) =>{
     const existingUser = await db.collection('users').findOne({ email: email });
     return existingUser;
 }
+
+const updateUserTotalExpense = async (key, value, userId) => {
+    console.log("key, value, userId, ",key, value, userId)
+    const db = getDb();
+    let updateTotalExpense = {};
+    updateTotalExpense[key] = value;
+    await db
+        .collection('users')
+        .updateOne(
+            { _id: userId },
+            {
+                $set: updateTotalExpense
+            }
+        );
+}
+
+exports.updateUserTotalExpense = updateUserTotalExpense;

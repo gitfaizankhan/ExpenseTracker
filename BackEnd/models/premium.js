@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const orderData = new mongoose.Schema({
+const premiumPurchase = new mongoose.Schema({
     paymentid: {
         type: String,
-        required: true
+        required: true,
+        default: null
     },
     orderid: {
         type: String,
@@ -13,15 +14,15 @@ const orderData = new mongoose.Schema({
         type: String,
         required: true
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
 });
 
 
-const OrderData = mongoose.model('Orders', orderData);
+const Premium = mongoose.model('PremiumPurchase', premiumPurchase);
 
-module.exports = OrderData;
+module.exports = Premium;
 
 

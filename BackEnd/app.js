@@ -7,8 +7,8 @@ const userRoute = require('./routes/users');
 const expenseRoute = require("./routes/expense");
 const Expense = require('./models/expense');
 const User = require('./models/user');
-const Order = require('./models/purchaseData');
-const purchaseRoute = require('./routes/purchase');
+const Order = require('./models/premium');
+const purchaseRoute = require('./routes/premium');
 const ForgetPassword = require('./models/forgetpassword');
 const passwordroute = require('./routes/password');
 const FileUrl = require('./models/fileUrlSave');
@@ -30,7 +30,7 @@ app.use(cors());
 
 app.use('/user', userRoute);
 app.use('/expense', expenseRoute);
-// app.use('/purchase', purchaseRoute);
+app.use('/purchase', purchaseRoute);
 // app.use('/password', passwordroute);
 
 

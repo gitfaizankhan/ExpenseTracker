@@ -11,6 +11,7 @@ async function addExpense(){
             category
         }
         const result = await axios.post('http://localhost:3000/expense/addExpense/', expenseData, { headers: {'Authorization': token}});
+        console.log(result);
         showOnWindowData(result.data)
     }catch(error){
         console.log(error);
@@ -36,7 +37,7 @@ function showOnWindowData(data){
         deleteB.addEventListener('click', async (e) => {
             try {
                 const token = localStorage.getItem('token');
-                const result = await axios.delete('http://localhost:3000/expense/delete/' + data.id, { headers: { 'Authorization': token } });
+                const result = await axios.delete('http://localhost:3000/expense/delete/' + data._id, { headers: { 'Authorization': token } });
                 tr.remove();
             } catch (error) {
                 console.log(error);
@@ -54,6 +55,7 @@ function showOnWindowData(data){
 
 // Show User Expense
 function showOnWindow(dat) {
+    console.log("dat ", dat);
     let tbody = document.getElementById("items");
     tbody.innerHTML = ''
     for (let data of dat) {
@@ -110,7 +112,8 @@ function leaderboard(data){
             }
             
         }catch(error){
-            throw new Error(error);
+            console.log("error ", error);
+            // throw new Error(error);
         }
     });
     diveElement.appendChild(leaderboardbtn);
@@ -171,6 +174,7 @@ function getPremiumButton(data){
 
 // premium Features Action
 function premiumbtn(data){
+
     if(data === false){
         getPremiumButton(data);
     }else{
@@ -260,13 +264,14 @@ async function getProducts(page){
     });
     const expenseData = await axios.get(`http://localhost:3000/expense/getExpense?page=${page}`, { headers: { 'Authorization': token, 'items': item } });
     showOnWindow(expenseData.data.expense);
-    showPagination(expenseData.data.paginationDetails)
+    showPagination(expenseData.data.paginationDetails);
     return expenseData;
 }
 window.addEventListener('DOMContentLoaded', async () => {
     const page = 1;
     const dara = await getProducts(page);
+    console.log(dara);
     const { premium, paginationDetails } = dara.data;
-    downloadData(paginationDetails);
+    downloadData(premium);
     premiumbtn(premium);
 })

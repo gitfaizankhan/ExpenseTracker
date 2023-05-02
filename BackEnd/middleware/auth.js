@@ -17,4 +17,9 @@ const userAuth = async (req, res, next)=>{
     }
 }
 
-module.exports = userAuth;
+const generateJWT = (email)=>{
+    return jwt.sign({ email: email }, process.env.TOKEN_SECRET);
+};
+
+exports.userAuth = userAuth;
+exports.generateJWT  = generateJWT;
