@@ -31,7 +31,7 @@ app.use(cors());
 app.use('/user', userRoute);
 app.use('/expense', expenseRoute);
 app.use('/purchase', purchaseRoute);
-// app.use('/password', passwordroute);
+app.use('/password', passwordroute);
 
 
 // User.hasMany(Expense);

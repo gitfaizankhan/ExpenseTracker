@@ -23,7 +23,6 @@ exports.getUser = async (email) =>{
 }
 
 const updateUser = async (key, value, userId) => {
-    console.log("key, value, userId, ",key, value, userId)
     const db = getDb();
     let userData = {};
     userData[key] = value;

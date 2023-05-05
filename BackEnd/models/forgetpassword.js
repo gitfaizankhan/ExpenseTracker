@@ -5,7 +5,7 @@ const forgetPassword = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }

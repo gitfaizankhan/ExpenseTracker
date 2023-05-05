@@ -1,5 +1,5 @@
 const Sib = require('sib-api-v3-sdk');
-const forget = require('../models/forgetpassword')
+const forget = require('../services/forget')
 const user = require('../services/user')
 const db = require('../utils/dbConnection').getDb;
 const bcrypt = require('bcrypt');
@@ -7,7 +7,7 @@ require('dotenv').config()
 
 // Active forget password id
 exports.forgetPassword = async (req, res) => {
-
+    console.log("hello faizan");
     const forgetemail = req.body.email;
 
     const client = Sib.ApiClient.instance
@@ -42,17 +42,16 @@ exports.forgetPassword = async (req, res) => {
             console.log(result);
         })
         .catch(err => console.log(err));
-
-        // 
-    const forgetuser = await user.getUser({ email: forgetemail });
+    const forgetuser = await user.getUser(forgetemail);
     console.log("forgetUser ", forgetuser);
-    const userexist = await forget.findOne({ where: { userId: forgetuser.id } });
+    const userexist = await forget.getForgetPassword('userId', forgetuser._id);
+    console.log("userexist ", userexist);
     if (userexist) {
-        await forget.update({ isactive: true }, { where: { userId: forgetuser.id } });
+        await forget.updateForgetPassword('userId', forgetuser._id, true);
     } else {
-        await forget.create({ userId: forgetuser.id, isactive: true });
+        await forget.addForgetPassword({ userId: forgetuser._id, isactive: true });
     }
-    const forgetId = await forget.findOne({ where: { userId: forgetuser.id } });
+    const forgetId = await forget.getForgetPassword('userId', forgetuser._id);
     res.status(200).json(forgetId);
 }
 
