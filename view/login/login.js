@@ -22,6 +22,7 @@ async function signin() {
 async function passwordforget(){
     try{
         let email = document.getElementById('registeremail').value;
+        console.log("email ", email);
         const forgetdata = {
             email
         }
