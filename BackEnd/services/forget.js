@@ -1,6 +1,6 @@
 const getDb = require('../utils/dbConnection').getDb;
 const ForgetModel = require('../models/forgetpassword');
-
+const monodb = require('mongodb');
 exports.addForgetPassword = async (data) =>{
     const db = getDb();
     const forget = new ForgetModel(data);
@@ -11,7 +11,7 @@ exports.addForgetPassword = async (data) =>{
 exports.getForgetPassword = async (key, value) =>{
     const db = getDb();
     let forgetData = {};
-    forgetData[key] = value;
+    forgetData[key] = new monodb.ObjectId(value);
     const getForget = await db.collection('forgetpassword').findOne(forgetData);
     return getForget;
 }
@@ -19,7 +19,7 @@ exports.getForgetPassword = async (key, value) =>{
 exports.updateForgetPassword = async(key, value, status) =>{
     const db = getDb();
     let forgetData = {};
-    forgetData[key] = value;
+    forgetData[key] = new monodb.ObjectId(value);
     const getForgetUpdate = await db
         .collection('forgetpassword')
         .updateOne(

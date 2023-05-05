@@ -1,13 +1,13 @@
 const Sib = require('sib-api-v3-sdk');
 const forget = require('../services/forget')
 const user = require('../services/user')
-const db = require('../utils/dbConnection').getDb;
+const monodb = require('mongodb');
 const bcrypt = require('bcrypt');
 require('dotenv').config()
 
+
 // Active forget password id
 exports.forgetPassword = async (req, res) => {
-    console.log("hello faizan");
     const forgetemail = req.body.email;
 
     const client = Sib.ApiClient.instance
@@ -43,29 +43,27 @@ exports.forgetPassword = async (req, res) => {
         })
         .catch(err => console.log(err));
     const forgetuser = await user.getUser(forgetemail);
-    console.log("forgetUser ", forgetuser);
     const userexist = await forget.getForgetPassword('userId', forgetuser._id);
-    console.log("userexist ", userexist);
     if (userexist) {
         await forget.updateForgetPassword('userId', forgetuser._id, true);
     } else {
         await forget.addForgetPassword({ userId: forgetuser._id, isactive: true });
     }
-    const forgetId = await forget.getForgetPassword('userId', forgetuser._id);
+    const forgetId = await forget.getForgetPassword('userId', new monodb.ObjectId(forgetuser._id));
     res.status(200).json(forgetId);
 }
 
 // reset password
 exports.resetpassword = async (req, res)=>{
     const id =  req.body.forgetid;
-    const userexist = await forget.findByPk(id); 
+    const userexist = await forget.getForgetPassword('_id', id); 
     if(userexist.isactive){
         const password = req.body.password;
         const salt = 5;
         await bcrypt.hash(password, salt, async (err, hash) => {
-            await user.update({ password: hash }, { where: { id: userexist.userId } });
+            await user.updateUser('password', hash, userexist.userId);
         });
-        const data = await forget.update({ isactive: false }, { where: { id: id } });
+        const data = await forget.updateForgetPassword('_id', id, false);
         res.status(200).json(data);
     }else{
         res.status(404).json({

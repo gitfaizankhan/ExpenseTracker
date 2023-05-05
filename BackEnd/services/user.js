@@ -22,6 +22,13 @@ exports.getUser = async (email) =>{
     return existingUser;
 }
 
+exports.getUserID = async (userId) => {
+    const db = getDb();
+    const existingUser = await db.collection('users').findOne({ userId: userId });
+    return existingUser;
+}
+
+
 const updateUser = async (key, value, userId) => {
     const db = getDb();
     let userData = {};

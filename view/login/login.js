@@ -28,7 +28,7 @@ async function passwordforget(){
         }
         const datad = await axios.post('http://localhost:3000/password/forgotpassword', forgetdata);
         window.alert("Go to Email And Click On link");
-        localStorage.setItem('forgetid', datad.data.id);
+        localStorage.setItem('forgetid', datad.data._id);
     }catch(error){
         alert("Please Enter Correct Email")
         console.log(error);

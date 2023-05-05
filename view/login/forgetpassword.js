@@ -2,7 +2,7 @@ async function forgetPassword() {
     try {
         let pass = document.getElementById('password').value;
         let forgetid = localStorage.getItem('forgetid');
-
+        console.log("forgetid ", forgetid);
         const resetpasswor = {
             forgetid: forgetid,
             password: pass
