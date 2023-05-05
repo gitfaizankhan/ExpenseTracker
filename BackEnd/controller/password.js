@@ -1,6 +1,7 @@
 const Sib = require('sib-api-v3-sdk');
 const forget = require('../models/forgetpassword')
-const user = require('../models/user')
+const user = require('../services/user')
+const db = require('../utils/dbConnection').getDb;
 const bcrypt = require('bcrypt');
 require('dotenv').config()
 
@@ -43,7 +44,8 @@ exports.forgetPassword = async (req, res) => {
         .catch(err => console.log(err));
 
         // 
-    const forgetuser = await user.findOne({ where: { email: forgetemail } });
+    const forgetuser = await user.getUser({ email: forgetemail });
+    console.log("forgetUser ", forgetuser);
     const userexist = await forget.findOne({ where: { userId: forgetuser.id } });
     if (userexist) {
         await forget.update({ isactive: true }, { where: { userId: forgetuser.id } });

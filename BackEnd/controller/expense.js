@@ -53,7 +53,7 @@ exports.deleteExpense = async (req, res, next)=>{
         let totalexpensedata = expenseAmount - getDeleteExpese[0].amount;
         const deleteResult = await expense.deleteExpense(expenseId, userId); 
         if (deleteResult){
-            await userTotalExpense.updateUserTotalExpense("totalExpense", totalexpensedata, userId);
+            await userTotalExpense.updateUser("totalExpense", totalexpensedata, userId);
             res.status(200).json({ message: "Successfully Deleted", success: deleteResult });
         }else{
             res.status(403).json({ message: "Something Went Wrong", success: false });

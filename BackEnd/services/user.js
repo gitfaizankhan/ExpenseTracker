@@ -22,19 +22,36 @@ exports.getUser = async (email) =>{
     return existingUser;
 }
 
-const updateUserTotalExpense = async (key, value, userId) => {
+const updateUser = async (key, value, userId) => {
     console.log("key, value, userId, ",key, value, userId)
     const db = getDb();
-    let updateTotalExpense = {};
-    updateTotalExpense[key] = value;
+    let userData = {};
+    userData[key] = value;
     await db
         .collection('users')
         .updateOne(
             { _id: userId },
             {
-                $set: updateTotalExpense
+                $set: userData
             }
         );
 }
 
-exports.updateUserTotalExpense = updateUserTotalExpense;
+
+const findAllUserExpense = async () => {
+    try {
+        const db = getDb();
+        const result = await db.collection('users')
+            .find({})
+            .project({ name: 1, totalExpense: 1, _id: 0 })
+            .sort({ totalExpense: -1 })
+            .toArray();
+        console.log(result);
+        return result;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+exports.updateUser = updateUser;
+exports.findAllUserExpense = findAllUserExpense;

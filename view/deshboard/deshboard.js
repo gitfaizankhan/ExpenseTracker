@@ -55,7 +55,6 @@ function showOnWindowData(data){
 
 // Show User Expense
 function showOnWindow(dat) {
-    console.log("dat ", dat);
     let tbody = document.getElementById("items");
     tbody.innerHTML = ''
     for (let data of dat) {
@@ -126,7 +125,7 @@ function showleaderboardData(data){
     let name = document.createElement('td');
     let amount = document.createElement('td');
     name.innerText = `Name: ${data.name}`,
-    amount.innerText = `Total Expense: ${data.totalexpense}`;
+    amount.innerText = `Total Expense: ${data.totalExpense}`;
     tr.append(name);
     tr.append(amount);
     datatable.append(tr);
@@ -142,6 +141,7 @@ function getPremiumButton(data){
     button.addEventListener('click', async (e) => {
         const token = localStorage.getItem('token');
         const response = await axios.get('http://localhost:3000/purchase/premium_member', { headers: { 'Authorization': token } });
+        console.log("response ", response);
         var options = {
             "key": response.data.key_id,
             "order_id": response.data.order.id,
@@ -193,7 +193,7 @@ function premiumbtn(data){
 
 
 // downloaded file url
-getdownloadedurl();
+// getdownloadedurl();
 
 async function getdownloadedurl(){
    
@@ -270,7 +270,6 @@ async function getProducts(page){
 window.addEventListener('DOMContentLoaded', async () => {
     const page = 1;
     const dara = await getProducts(page);
-    console.log(dara);
     const { premium, paginationDetails } = dara.data;
     downloadData(premium);
     premiumbtn(premium);

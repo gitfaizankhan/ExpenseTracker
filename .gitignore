@@ -2,6 +2,3 @@ node_modules
 test.html
 test.js
 .env
-
-server.key
-server.cert

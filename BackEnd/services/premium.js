@@ -11,3 +11,28 @@ exports.addPremiumPurchas = async (orderid, status, userId) =>{
         console.log(error);
     }
 }
+
+
+exports.findPaymentDetails = async(orderid) =>{
+    const db = getDb();
+    const findPaymant = await db.collection('premium').findOne({ orderid : orderid});
+    console.log("findPaymant ", findPaymant);
+    return findPaymant;
+}
+
+
+exports.updatePaymentDetails = async(orderId, paymantId, status) =>{
+    const db = getDb();
+    const paymentData = { paymentid: paymantId, status: status }
+    const updatePayment = await db
+        .collection('premium')
+        .updateOne(
+            { 
+                orderid: orderId 
+            },
+            {
+                $set:paymentData
+            } 
+        );
+    return updatePayment;
+}

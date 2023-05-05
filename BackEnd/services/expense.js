@@ -14,7 +14,7 @@ exports.addExpense = async (expenseData, user) => {
         const insertResult = db.collection('expenses').insertOne(expense);
         
         const totalExpenseData = user.totalExpense + +amount;
-        userTotalExpense.updateUserTotalExpense("totalExpense", totalExpenseData, userId);
+        userTotalExpense.updateUser("totalExpense", totalExpenseData, userId);
         return insertResult;
     }catch(error){
         throw error;
