@@ -160,6 +160,7 @@ function getPremiumButton(data){
         };
         console.log("Options ", options);
         var Rozarpay = new Razorpay(options);
+        console.log(Razorpay);
         Rozarpay.open();
         e.preventDefault();
 

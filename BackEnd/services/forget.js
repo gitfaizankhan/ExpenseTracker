@@ -1,6 +1,8 @@
 const getDb = require('../utils/dbConnection').getDb;
 const ForgetModel = require('../models/forgetpassword');
 const monodb = require('mongodb');
+
+
 exports.addForgetPassword = async (data) =>{
     const db = getDb();
     const forget = new ForgetModel(data);

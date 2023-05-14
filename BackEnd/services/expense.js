@@ -43,7 +43,6 @@ exports.findExpense = async (expenseId) => {
 
 exports.findExpenseByUserID = async (userId) => {
     const db = getDb();
-    console.log("userId ", userId);
     return await db
         .collection('expenses')
         .find({ userId: userId})

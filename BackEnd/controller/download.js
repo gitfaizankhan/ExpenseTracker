@@ -21,8 +21,6 @@ async function uploadToS3(data, filename) {
                 console.log('Something Went Wrong', err);
                 reject(err);
             } else {
-                // will return file url
-                // console.log(s3response);
                 resolve(s3response.Location);
             }
         })
@@ -37,7 +35,6 @@ exports.downloadData = async (req, res) => {
         const stringifyedExpenses = JSON.stringify(expenses);
         const filename = `Expense${userId}/${new Date()}.txt`;
         const fileUrl = await uploadToS3(stringifyedExpenses, filename);
-        console.log(fileUrl);
         await fileUrlSave.addFileUrl({url: fileUrl, userId: userId});
         res.status(200).json({ fileUrl, success: true });
     }catch(error){

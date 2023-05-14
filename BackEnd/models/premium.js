@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const premiumPurchase = new mongoose.Schema({
-    paymentid: {
-        type: String,
-        required: true,
-        default: null
-    },
     orderid: {
         type: String,
         required: true

@@ -16,7 +16,6 @@ exports.addPremiumPurchas = async (orderid, status, userId) =>{
 exports.findPaymentDetails = async(orderid) =>{
     const db = getDb();
     const findPaymant = await db.collection('premium').findOne({ orderid : orderid});
-    console.log("findPaymant ", findPaymant);
     return findPaymant;
 }
 

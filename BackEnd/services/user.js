@@ -52,7 +52,6 @@ const findAllUserExpense = async () => {
             .project({ name: 1, totalExpense: 1, _id: 0 })
             .sort({ totalExpense: -1 })
             .toArray();
-        console.log(result);
         return result;
     } catch (err) {
         console.log(err);
